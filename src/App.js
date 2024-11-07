@@ -6,6 +6,8 @@ import Testimonial from "./components/Testimonial";
 import CallToAction from "./components/CallToAction";
 import Footer from "./components/Footer";
 import LoginPage from "./components/Login";
+import SubContent from "./components/SubContent";
+import Content from "./components/Content";
 
 function App() {
   return (
@@ -13,17 +15,17 @@ function App() {
       <Routes>
         {/* Route for the LoginPage */}
         <Route path="/" element={<LoginPage />} />
-
+        <Route path="/content/:categoryId/" element={<Content />} />
+        <Route path="/content/subcontent/:contentId/" element={<SubContent />} />
         {/* Route for the HomePage */}
         <Route
           path="/home"
           element={
             <>
-              <Navbar />
-              <Hero />
+              {/* <Hero /> */}
               <Features />
-              <Testimonial />
-              <CallToAction />
+              {/* <Testimonial />
+              <CallToAction /> */}
               <Footer />
             </>
           }

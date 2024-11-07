@@ -15,7 +15,7 @@ function LoginPage() {
     try {
       // Make a POST request to your backend login endpoint
       const response = await axios.post(
-        "https://info.ensaq.et/api/account/login",
+        "http://127.0.0.1:8000/api/account/login",
         {
           password,
         }
