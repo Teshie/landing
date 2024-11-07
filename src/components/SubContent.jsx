@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 const SubContent = () => {
   const [subContents, setSubContents] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
   const { contentId } = useParams();
   const navigate = useNavigate();
 
@@ -11,12 +12,14 @@ const SubContent = () => {
     const fetchSubContents = async () => {
       try {
         const response = await fetch(
-          `http://127.0.0.1:8000/api/content/subcontent/`
+          `https://info.ensaq.et/api/content/subcontent/`
         );
         const data = await response.json();
         setSubContents(data);
+        setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
         console.error("Error fetching subcontents:", error);
+        setLoading(false); // Set loading to false in case of error
       }
     };
 
@@ -43,22 +46,24 @@ const SubContent = () => {
         Back
       </button>
 
-      <h2 className="text-3xl font-bold text-center mb-8">
-        SubContent Details
-      </h2>
-      {filteredSubContents.length === 0 ? (
+      {/* Loading state */}
+      {loading ? (
+        <div className="flex justify-center items-center">
+          <div className="loader border-t-4 border-blue-500 rounded-full w-8 h-8 animate-spin"></div>
+        </div>
+      ) : filteredSubContents?.length === 0 ? (
         <p className="text-gray-600 text-center">No subcontents available.</p>
       ) : (
-        filteredSubContents.map((subContent) => (
+        filteredSubContents?.map((subContent) => (
           <div
-            key={subContent.id}
+            key={subContent?.id}
             className="bg-white rounded-lg shadow-md p-6 mb-6"
           >
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-              {subContent.title}
+              {subContent?.title}
             </h3>
             <p className="text-gray-700 leading-relaxed">
-              {subContent.description}
+              {subContent?.description}
             </p>
           </div>
         ))

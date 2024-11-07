@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 const Content = () => {
   const [allContents, setAllContents] = useState([]);
   const [filteredContents, setFilteredContents] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { categoryId } = useParams();
   const navigate = useNavigate();
 
@@ -12,7 +13,7 @@ const Content = () => {
     const fetchContents = async () => {
       try {
         const response = await fetch(
-          "http://127.0.0.1:8000/api/content/content/"
+          "https://info.ensaq.et/api/content/content/"
         );
         const data = await response.json();
         setAllContents(data);
@@ -24,6 +25,8 @@ const Content = () => {
         setFilteredContents(filtered);
       } catch (error) {
         console.error("Error fetching contents:", error);
+      } finally {
+        setIsLoading(false); // Stop loading animation
       }
     };
 
@@ -33,9 +36,9 @@ const Content = () => {
   const handleContentClick = (contentId) => {
     navigate(`/content/subcontent/${contentId}/`);
   };
-  // Handle Back Button Click
+
   const handleBackClick = () => {
-    navigate("/home"); // Navigate back to the Categories page
+    navigate("/home");
   };
 
   return (
@@ -47,29 +50,37 @@ const Content = () => {
       >
         Back
       </button>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredContents.map((content) => (
-          <div
-            key={content.id}
-            className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer overflow-hidden"
-            onClick={() => handleContentClick(content.id)}
-          >
-            <img
-              src={content.image}
-              alt={content.title}
-              className="w-full h-48 object-cover"
-            />
-            <div className="p-4">
-              <h3 className="text-lg font-semibold text-gray-800">
-                {content.title}
-              </h3>
-              <p className="text-gray-600 text-sm mt-2 line-clamp-3">
-                {content.description}
-              </p>
+
+      {isLoading ? (
+        // Loading animation (simple spinner)
+        <div className="flex justify-center items-center">
+          <div className="loader border-t-4 border-blue-500 rounded-full w-8 h-8 animate-spin"></div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {filteredContents?.map((content) => (
+            <div
+              key={content.id}
+              className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer overflow-hidden"
+              onClick={() => handleContentClick(content.id)}
+            >
+              <img
+                src={content?.image}
+                alt={content?.title}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-gray-800">
+                  {content?.title}
+                </h3>
+                <p className="text-gray-600 text-sm mt-2 line-clamp-3">
+                  {content?.description}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
