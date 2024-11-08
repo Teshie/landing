@@ -19,7 +19,7 @@ function LoginPage() {
       // Make a POST request to your backend login endpoint
       const response = await axios.post(
         "https://info.ensaq.et/api/account/login",
-        { password }
+        { code: password }
       );
 
       // Store the token and user information in localStorage
