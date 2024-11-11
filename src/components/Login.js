@@ -12,8 +12,8 @@ function LoginPage() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Clear any previous errors
-    setLoading(true); // Start loading animation
+    setError(null);
+    setLoading(true);
 
     try {
       // Make a POST request to your backend login endpoint
@@ -22,19 +22,22 @@ function LoginPage() {
         { code: password }
       );
 
-      // Store the token and user information in localStorage
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      // Store the token and user information in localStorage, including loginTime
+      const user = {
+        ...response.data,
+        loginTime: new Date().getTime(), // Set login time in milliseconds
+      };
+      localStorage.setItem("token", response.data);
+      localStorage.setItem("user", JSON.stringify(user));
 
       // Redirect to the /home page
       navigate("/home");
     } catch (err) {
-      // Handle errors, e.g., incorrect password or server error
       setError(
         err.response?.data?.error || "Incorrect Passcode. Please try again."
       );
     } finally {
-      setLoading(false); // Stop loading animation
+      setLoading(false);
     }
   };
 

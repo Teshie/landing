@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 const SubContent = () => {
   const [subContents, setSubContents] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true); // Loading state
   const { contentId } = useParams();
   const navigate = useNavigate();
 
@@ -59,9 +59,19 @@ const SubContent = () => {
             key={subContent?.id}
             className="bg-white rounded-lg shadow-md p-6 mb-6"
           >
+            {/* Image Banner */}
+            {subContent?.image && (
+              <img
+                src={subContent?.image}
+                alt={`${subContent?.title} banner`}
+                className="w-full h-64 object-cover rounded-lg mb-4"
+              />
+            )}
+            {/* Title */}
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">
               {subContent?.title}
             </h3>
+            {/* Description */}
             <p className="text-gray-700 leading-relaxed">
               {subContent?.description}
             </p>
