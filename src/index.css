@@ -10,7 +10,17 @@
 	font-family: Raleway, sans-serif;
 }
 
+/* Add to your global CSS or inside your JSX styles */
+.containers {
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
 
+.containers::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, and Opera */
+}
 /* Styles for Google Translate widget */
 #google_translate_element select {
   background-color: #f5f5f5;

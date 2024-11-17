@@ -3,19 +3,26 @@ import { useNavigate } from "react-router-dom";
 
 const Features = () => {
   const [categories, setCategories] = useState([]);
+  const [contentItems, setContentItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch(
+        const categoryResponse = await fetch(
           "https://info.ensaq.et/api/content/categories/"
         );
-        const data = await response.json();
-        setCategories(data);
+        const categoryData = await categoryResponse.json();
+        setCategories(categoryData);
+
+        const contentResponse = await fetch(
+          "https://info.ensaq.et/api/content/content/"
+        );
+        const contentData = await contentResponse.json();
+        setContentItems(contentData.filter((item) => !item.recomended));
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching data:", error);
       } finally {
         setLoading(false);
       }
@@ -26,6 +33,9 @@ const Features = () => {
 
   const handleCategoryClick = (categoryId) => {
     navigate(`/content/${categoryId}/`);
+  };
+  const handleContentClicked = (contentId) => {
+    navigate(`/content/subcontent/${contentId}/`);
   };
 
   return (
@@ -57,26 +67,53 @@ const Features = () => {
           <span className="ml-2 text-blue-500 text-lg">Loading...</span>
         </div>
       ) : (
-        <div className="flex overflow-x-auto space-x-4">
-          {categories?.map((category) => (
-            <div
-              key={category.id}
-              className="min-w-[250px] bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer overflow-hidden"
-              onClick={() => handleCategoryClick(category.id)}
-            >
-              <img
-                src={category.image}
-                alt={category.name}
-                className="w-full h-24 object-cover"
-              />
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-800">
-                  {category.name}
-                </h3>
+        <>
+          <div className="flex overflow-x-auto space-x-4 containers">
+            {categories.map((category) => (
+              <div
+                key={category.id}
+                className="min-w-[250px] bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 cursor-pointer overflow-hidden"
+                onClick={() => handleCategoryClick(category.id)}
+              >
+                <img
+                  src={category.image}
+                  alt={category.name}
+                  className="w-full h-24 object-cover"
+                />
+                <div className="p-2">
+                  <h3 className="text-sm font-semibold text-gray-800">
+                    {category.name}
+                  </h3>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+
+          <h2 className="text-2xl font-bold mt-8 mb-4">የሚመከሩ</h2>
+          <div className="flex flex-col space-y-4">
+            {contentItems.map((item) => (
+              <div
+                key={item.id}
+                className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-2 flex items-center"
+                onClick={() => handleContentClicked(item.id)}
+              >
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-12 h-12 object-cover rounded-full mr-3"
+                />
+                <div className="flex flex-col">
+                  <h3 className="text-sm font-semibold text-gray-800">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs text-gray-600">
+                    {item.description || "No description available."}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );

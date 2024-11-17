@@ -57,7 +57,7 @@ const Content = () => {
           <div className="loader border-t-4 border-blue-500 rounded-full w-8 h-8 animate-spin"></div>
         </div>
       ) : (
-        <div className="flex overflow-x-auto space-x-4">
+        <div className="flex overflow-x-auto space-x-4 containers" >
           {filteredContents?.map((content) => (
             <div
               key={content.id}
