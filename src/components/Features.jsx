@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Header from "./Header";
 
 const Features = () => {
   const [categories, setCategories] = useState([]);
@@ -40,6 +41,7 @@ const Features = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Header/>
       <h2 className="text-3xl font-bold mb-8">Categories</h2>
 
       {loading ? (
