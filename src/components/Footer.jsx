@@ -50,7 +50,7 @@ const Footer = () => {
         {/* Input Container */}
         <div className="flex flex-col justify-between">
           <div className="hidden text-white md:block">
-            Enable ET © 2024, All Rights Reserved
+             ©2024, All Rights Reserved
           </div>
         </div>
       </div>

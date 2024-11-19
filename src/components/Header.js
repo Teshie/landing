@@ -37,7 +37,7 @@ const Header = () => {
         </div>
 
         {/* Logo */}
-        <div className="text-white font-bold text-lg">
+        <div className="sr-only text-white font-bold text-lg">
           <img
             src={logo} // Replace with your logo's path
             alt="Logo"
